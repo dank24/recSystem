@@ -149,9 +149,8 @@ body{
 #sForm > h2 {
   margin-top: 15%;
 }
-#sForm > p {
-  margin-top: 10%;
-  margin-left: -50%;
+#sForm > div > p {
+  margin-top: 18%;
 }
 #sForm > div {
   margin-top: -5%;

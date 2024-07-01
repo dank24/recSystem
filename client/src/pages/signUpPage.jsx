@@ -32,13 +32,11 @@ const SignUp = () =>{
                 <section id='sFormSec'>
                     <form id='sForm' method='post'>
                         <h2>Welcome, Create a Drec Account</h2>
-                    
-                    {!nextInp && <p>Enter a Password</p>}
-                    {nextInp && <p>Enter a Name and an Email</p>}
-        
+     
                     
                     { nextInp == true &&
                     <div> 
+                        <p>Enter a Name and an Email</p>
                         <fieldset>
                             <legend>UserName</legend>
                             <input id='userName' name='userName' placeholder='User Name' required type='text' 
@@ -63,7 +61,9 @@ const SignUp = () =>{
                     }
 
                     {!nextInp && 
+                    
                      <div>
+                        <p>Enter a Password</p>
                         <fieldset>
                             <legend>Password</legend>
                             <input id='password' name='password' placeholder='Password' required 
