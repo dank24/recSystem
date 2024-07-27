@@ -7,21 +7,61 @@ import NavBar from '../components/navBar'
 
 const SignUp = () =>{
 
-        let [name, setName] = useState('')
-        let [email, setEmail] = useState('')
-        let [password, setPassword] = useState('')
-        let [confirmP, setConfirmP] = useState('')
-        
+//variables
+    const [pageData, setPageData] = useState({
+        userName: '',
+        userEmail: '',
+        userPassword: '',
+        userCPassword: '',
+    })
+    
+    const [sFormData, setSFormData] = useState(pageData)
+
         let [nextInp, setNextInp] = useState(true)
 
-
-   const nextInfo = (b) => {
-        b.preventDefault()
-        if(name && email){
-            setNextInp(false)
-            console.log(nextInp)
+//functions
+   const nextPage = (b) => {
+        if(pageData.userName && pageData.userEmail){
+            b.preventDefault()
+            setNextInp(false);
         }
+        if(pageData.userPassword && pageData.userCPassword){
+
+            setSFormData(pageData)
+
+            handleSubmit()        
+        }
+
     }
+
+    const handleCHange = (e) =>{
+        let {name, placeholder, value} = e.target
+        setPageData(prev =>{
+            return {
+                ...prev,
+                [name]: value
+            }
+        })
+
+    }
+
+    const handleSubmit = () =>{
+    
+
+    
+            fetch('http://localhost:3021/signup', {
+                method: 'POST',
+                body: JSON.stringify(sFormData),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': "application/json"
+                }
+            }).then(console.log('success'))
+    
+
+        console.log(pageData)
+    }
+
  
     return(
 
@@ -30,7 +70,7 @@ const SignUp = () =>{
             <div id='signUpFirstDiv'>
 
                 <section id='sFormSec'>
-                    <form id='sForm' method='post'>
+                    <form id='sForm' method='post' onSubmit={handleSubmit}>
                         <h2>Welcome, Create a Drec Account</h2>
      
                     
@@ -39,21 +79,19 @@ const SignUp = () =>{
                         <p>Enter a Name and an Email</p>
                         <fieldset>
                             <legend>UserName</legend>
-                            <input id='userName' name='userName' placeholder='User Name' required type='text' 
-                                onChange={e =>{
-                                    setName(e.target.value)
-                                    console.log(name)
-                                }}
+                            <input 
+                                id='userName' 
+                                name='userName' placeholder='User Name' 
+                                value={pageData.userName} onChange={handleCHange}
                             />
                         </fieldset>
 
                         <fieldset>
                             <legend>Email</legend>
-                            <input id='email' name='email' type='email' required placeholder='Email'
-                                onChange={e =>{
-                                    setEmail(e.target.value)
-                                    console.log(email)
-                                }}
+                            <input 
+                                id='email' 
+                                name='userEmail' placeholder='Email' 
+                                value={pageData.userEmail} onChange={handleCHange}
                             />
                         </fieldset>
 
@@ -66,26 +104,28 @@ const SignUp = () =>{
                         <p>Enter a Password</p>
                         <fieldset>
                             <legend>Password</legend>
-                            <input id='password' name='password' placeholder='Password' required 
-                                onChange={e =>{
-                                    setPassword(e.target.value)
-                                }}
+                            <input 
+                                id='password' required 
+                                name='userPassword' placeholder='Password' 
+                                value={pageData.userPassword} onChange={handleCHange}
                             />
                         </fieldset>
 
                         <fieldset>
                             <legend>Confirm Password</legend>
-                            <input placeholder='Confirm Password' required 
-                                onChange={e =>{
-                                    setConfirmP(e.target.value)
-                                }}
+                            <input 
+                                id='cPassword' required 
+                                name='userCPassword'  placeholder='Confirm Password' 
+                                value={pageData.userCPassword} onChange={handleCHange}
                             />
                         </fieldset>
                     </div>
                     }
                         
-                        <button id='nextBtn'
-                         onClick={nextInfo}
+                        <button 
+                            type='submit'
+                            id='nextBtn'
+                            onClick={nextPage}
                          >Next</button>
                         
                     </form>
