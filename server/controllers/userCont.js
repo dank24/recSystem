@@ -6,16 +6,30 @@ const cors = require('cors')
 exports.userCreatePost = asyncHander(
     async(req,res,next) => {
 
-    res.header('Access-Control-Allow-Origin', "*")
+        let {userName, userPassword, userEmail} = req.body
+            let name = userName.toLowerCase()
+            let password = userPassword.toLowerCase()
+            let email = userEmail.toLowerCase()
+    
+        let user = await userModel.findOne({userName: name})
 
-        let {userName, userEmail} = req.body
-
-        cors: {
-            methods: ['PUT', 'POST', 'GET']   
-            origin: '*'       
+        if(user){
+            res.status(200).json('user exists')
+            console.log('this')
+        }
+        if(!user){
+         let newUser = new userModel({
+            userName: name,
+            userEmail: email,
+            userPassword: password
+         })
+         await newUser.save()
+         res.status(200).json('new user created')
+         console.log('saved')
         }
 
-        console.log(userEmail)
+        
+
     }
   
 /*

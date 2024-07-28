@@ -12,8 +12,13 @@ const app = express()
 const userRoutes = require('./routes/userRoutes')
 
 //use
+app.use(express.json())
+app.use(cors({
+    origin: '*',
+    methods: ['POST', 'GET', 'PUT']
+}))
 app.use('/signup', userRoutes)
-app.use(cors())
+
 
 
 
@@ -21,13 +26,10 @@ app.use(cors())
 const port = 3021
 app.listen(3021, () =>{
 
-    cors: {
-        methods: ['PUT', 'POST', 'GET']
-        origin: '*'
-    }
-    
+
     console.log(`Server Started on Port: ${port}`)
 })
+
 
 //database connect
 const mongoUrl = process.env.mongoUrl

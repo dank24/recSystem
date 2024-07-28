@@ -14,22 +14,22 @@ const SignUp = () =>{
         userPassword: '',
         userCPassword: '',
     })
-    
-    const [sFormData, setSFormData] = useState(pageData)
 
-        let [nextInp, setNextInp] = useState(true)
+    let [nextInp, setNextInp] = useState(true)
+    let [passText, setPassText] = useState()
 
 //functions
-   const nextPage = (b) => {
+   const btnAction = (b) => {
         if(pageData.userName && pageData.userEmail){
             b.preventDefault()
             setNextInp(false);
         }
         if(pageData.userPassword && pageData.userCPassword){
-
-            setSFormData(pageData)
-
-            handleSubmit()        
+            if(pageData.userPassword == pageData.userCPassword){
+                handleSubmit()
+            } else{
+                setPassText('the passwords do not match')
+            }
         }
 
     }
@@ -42,25 +42,22 @@ const SignUp = () =>{
                 [name]: value
             }
         })
-
     }
 
-    const handleSubmit = () =>{
-    
+const handleSubmit = () =>{
 
+    fetch('http://localhost:3021/signup', {
+        method: 'post',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': "application/json"
+        },
+        body: JSON.stringify(pageData)
+    })
+    .then(console.log('success'))
+    .catch(error => console.log(error))
     
-            fetch('http://localhost:3021/signup', {
-                method: 'POST',
-                body: JSON.stringify(sFormData),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': "application/json"
-                }
-            }).then(console.log('success'))
-    
-
-        console.log(pageData)
-    }
+}
 
  
     return(
@@ -101,11 +98,11 @@ const SignUp = () =>{
                     {!nextInp && 
                     
                      <div>
-                        <p>Enter a Password</p>
+                        {passText ? <p>{passText}</p>: <p>Enter a Password</p>}
                         <fieldset>
                             <legend>Password</legend>
                             <input 
-                                id='password' required 
+                                id='password' required type='password'
                                 name='userPassword' placeholder='Password' 
                                 value={pageData.userPassword} onChange={handleCHange}
                             />
@@ -114,7 +111,7 @@ const SignUp = () =>{
                         <fieldset>
                             <legend>Confirm Password</legend>
                             <input 
-                                id='cPassword' required 
+                                id='cPassword' required  type='password'
                                 name='userCPassword'  placeholder='Confirm Password' 
                                 value={pageData.userCPassword} onChange={handleCHange}
                             />
@@ -125,7 +122,7 @@ const SignUp = () =>{
                         <button 
                             type='submit'
                             id='nextBtn'
-                            onClick={nextPage}
+                            onClick={btnAction}
                          >Next</button>
                         
                     </form>
