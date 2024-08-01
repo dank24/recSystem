@@ -14,44 +14,40 @@ exports.userCreatePost = asyncHander(
         let user = await userModel.findOne({userName: name})
 
         if(user){
-            res.status(200).json('user exists')
-            console.log('this')
+
+            res.status(200).json({message: `User ${userName} Exists`})
         }
+
         if(!user){
          let newUser = new userModel({
             userName: name,
             userEmail: email,
             userPassword: password
          })
+
          await newUser.save()
-         res.status(200).json('new user created')
-         console.log('saved')
+         res.status(200).json({message: `New User: ${userName} Created`})
+         console.log('Saved user')
         }
 
-        
+    }         
+)
 
-    }
-  
-/*
-        const {userName, email, password} = req.body.toLowerCase()
-
-        const user = await(userModel.findOne({userName:userName}))
+exports.userLoginPost = asyncHander(
+    async(req,res,next) =>{
+        let {userName, userPassword} = req.body
+        let name = userName.toLowerCase();
+        let password = userPassword.toLowerCase()
+      
+        let user = await userModel.findOne({userName: name}) ||
+                   await userModel.findOne({userEmail: name})
 
         if(user){
-            res.status(404).json('user exist')
+            res.status(200).json({message: 'Welcome'})
         }
-
         if(!user){
-            let newUser = new userModel({
-                userName: userName,
-                userEmail: email,
-                userPassword: password
-            })
-            console.log('new user')
+            res.status(400).json({Message: `User Not Found`})
         }
-*/
-
-        
-    
-        
+    }
 )
+  

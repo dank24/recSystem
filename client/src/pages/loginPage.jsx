@@ -8,7 +8,6 @@ const LoginPage = () =>{
         userPassword: '',
     })
 
-    console.log(pageData)
 //Functions
 const handleChange = (e) =>{
     let {name, value, placeholder} = e.target
@@ -19,13 +18,26 @@ const handleChange = (e) =>{
         }
     })
 }
-    
+const handleSubmit = (e) =>{
+    e.preventDefault()
+    fetch('http://localhost:3021/user/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(pageData)
+    }).then(res => res.json()).then(data => console.log(data))
+} 
+
     return(
         <div id="loginMainCont">
 
             <div id="loginFirstDiv">
 
-                <form id="lForm">
+            <section id="lFormSec">
+
+                <form id="lForm" >
                     <h3>Login</h3>
 
                     <fieldset>
@@ -40,7 +52,7 @@ const handleChange = (e) =>{
                     <fieldset>
                         <legend>Password</legend>
                         <input 
-                            id="userPass" required
+                            id="userPass" required name="userPassword"
                             type="password" placeholder="Password"
                             value={pageData.userPassword}
                             onChange={handleChange}
@@ -48,11 +60,14 @@ const handleChange = (e) =>{
                     </fieldset>
 
                     <button
-                    
+                        type="button"
+                        onClick={handleSubmit}
                         >Login
                     
                     </button>
                 </form>
+
+            </section>
 
             </div>
 

@@ -17,7 +17,7 @@ app.use(cors({
     origin: '*',
     methods: ['POST', 'GET', 'PUT']
 }))
-app.use('/signup', userRoutes)
+app.use('/user', userRoutes)
 
 
 

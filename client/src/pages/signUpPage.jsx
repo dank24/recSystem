@@ -46,7 +46,7 @@ const SignUp = () =>{
 
 const handleSubmit = () =>{
 
-    fetch('http://localhost:3021/signup', {
+    fetch('http://localhost:3021/user/signup', {
         method: 'post',
         headers: {
             'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const handleSubmit = () =>{
         },
         body: JSON.stringify(pageData)
     })
-    .then(console.log('success'))
+    .then(res => console.log(res))
     .catch(error => console.log(error))
     
 }
@@ -124,6 +124,7 @@ const handleSubmit = () =>{
                             id='nextBtn'
                             onClick={btnAction}
                          >Next</button>
+            
                         
                     </form>
                 </section>

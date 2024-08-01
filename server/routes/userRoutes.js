@@ -3,10 +3,7 @@ const router = express.Router()
 
 const userCont = require('../controllers/userCont')
 
-router.post('/', userCont.userCreatePost)
-router.get('/',(req, res) =>{
-    res.send('This is the last time')
-})
-
+router.post('/signup', userCont.userCreatePost)
+router.post('/login', userCont.userLoginPost)
 
 module.exports = router
