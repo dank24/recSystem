@@ -1,0 +1,78 @@
+01
+"numpy" library is used to create numpy arrays
+
+02 
+"pandas" library is used to create pandas dataframes
+
+03
+"difflib" is used to compare names provided by the user
+and matches it to the one in the data set
+
+04
+"from sklearn.feature_extraction.text import TfidVectorizer"
+used to convert text data from the dataset into useful numbers
+
+05
+"from sklearn.metrics.pairwaise import cosine_similarity"
+is used to produce a similarity of all movies compared to other 
+movies allowing us to choose movies which are most related
+
+#data collection and preprocessing
+
+01 we load the data from the csv file through pandas dataframe
+"movies_df = pd.read_cs('<filePath>')"
+
+02 to see what data we are dealing with, we can print the first few rows 
+of the dataset using this function
+"movies_df.head()"
+
+# Select the relevent columns from the dataset we need
+ "selected_columns = ['genre','title','keywords',' ']"
+
+#replacing null values with null strings
+01 text data contains a lot of missing values, so we need to replace them with null strings
+using a for-loop
+
+#combing the columns we need for the system
+{
+	"columns = movies_df['genre']+movies_df['title']+.."
+}
+
+#converting textual data to numerical values this is beacuse
+we cannot find cosine similarity easily with text data, but we can do it numerical values
+{
+	"vectorizer = TfidVectorizer"
+	"columns_vector = vectorizer(columns)"
+}
+
+'.csv' = comma seperated values
+#gettin the cosine similarity score of the vectorized columns using "cosine_similarity"
+{
+	"similarity = cosine_similarity(columns_vector)"
+
+}
+this takes all the movies(rows) and compares it with all the other movies, and creating an arrays
+
+#user input 'the user inputs a movie name'
+{
+	"userMovie = input('enter movie name')"
+}
+
+#next we create a list with all the names of all the movies in the dataset
+{
+	"moviesList = movies_df['title'].tolist()"
+} (the ".tolist()" function converts the titles to a list)
+
+#finding the closet movie which matches the name provided by the user and
+{
+	"getCloseMatc = difflib.get_close_matches(userMovie, movieList)"
+	"matchedMovies = getCloseMatc[0]"
+} the "matchedmovies" returns the first index of the list which in theory is the closest matches
+
+#now that we have matced the users input to a movie inside the dataset, we need to find the movies index
+ or location within the dataset
+{
+	"matchedMoviesIndex = movies_df[movies_df.title == matchedMovies]['index'].value[0]"
+}
+
+

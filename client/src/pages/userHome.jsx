@@ -8,7 +8,6 @@ import SideBar from "../components/sideBar";
 
 function UserHome(){
 // Variables 
- 
 
     let movieName = ['harry potter', 'divergent', 'inside out', 'inside out 2','speed', 'john wick 3']
     const apiKey = 'b0daf648'
@@ -42,6 +41,9 @@ function UserHome(){
                   title = {apiData.Title}
                   />
         })
+
+ console.log('this')
+
 
     return(
         <div id="userHomeMainCont">

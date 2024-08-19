@@ -148,3 +148,70 @@
 #youRDiv, #homeDiv{
     margin-top: 4%;
 }
+
+/** onBoarding COmponent **/
+#onBoardMainCont{
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+#onBoardFirstDiv{
+    height: 99%;
+    width: 10%;
+    background-color: rgb(12, 9, 9);
+    border-radius: 1%;
+}
+#onBoardSecondDiv{
+    height: 99%;
+    width: 88%;
+    background-color: gray;
+    border-radius: 1%;
+
+}
+#onBoardSecondDiv > #cardDiv{
+    width: 90%;
+    height: 95%;
+    border-radius: 2%;
+    border: 1px solid gold;
+    display: grid;
+    grid-template-columns: 40% 40%;
+    grid-template-rows: 30% 30% 30%;
+    column-gap: 10px;
+    row-gap: 10px;
+    margin-top: 2%;
+    margin-left: 2%;
+    overflow: hidden;
+}
+
+/** OnboardCard Container **/
+#onBoardCardMainCont{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    border: 1px solid black;
+    border-radius: 2%;
+}
+#onBoardCardMainCont:hover {
+    box-shadow: 10px 10px red;
+}
+
+#onBoardCardMainCont img{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: 2%;
+    margin-bottom: 2%;
+}
+#onBoardCardMainCont h2 {
+    color: white;
+    margin-left: 2%;
+    margin-top: 4%;
+    font-size: larger;
+   
+}
