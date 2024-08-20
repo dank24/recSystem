@@ -9,24 +9,35 @@ const MovieCard = () => {
     const [csvData, setCsvData] = useState([])
 
 
-function csvImport(){
-    useEffect(() =>{
-        fetch(moviesCsvFile)
-        .then(res => res.text())
-        .then(data => {
-            papa.parse(data, {
-                header: true,
-                skipEmptyLines: true,
-                complete: (result) => {setCsvData(result.data)}
+    function csvImport(){
+        useEffect(() =>{
+            fetch(moviesCsvFile)
+            .then(res => res.text())
+            .then(data => {
+                papa.parse(data, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: (result) => {setCsvData(result.data)}
+                })
             })
-        })
-    }, [])
-    
+        }, [])
+
 }
+    function moviesData() {
+        let randomIndex = Math.floor(Math.random()*csvData.length)
+        
+        csvData.map( it =>{
+            
+        })
+    }
+
+
+csvImport()
+
+moviesData()
 
 console.log(csvData)
 
-csvImport()
 
 
 
