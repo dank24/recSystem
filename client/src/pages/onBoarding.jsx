@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
-import cors from 'node:cors'
+import React, { useEffect, useState } from 'react'
+import papa from 'papaparse'
+import MovieCard from '../components/moviesCard.jsx'
 
 
 import genres from '../assets/Data/genres.js'
@@ -33,20 +34,28 @@ const card = genres.data.genres.map(it =>{
 
 const OnBoarding = () => {
 
+  let [csvFie, setCsvFile] = useState('')
+
    useEffect(() =>{
-    fetch('http://127.0.0.1:5000/recommend?title=moana', {
+    fetch('http://127.0.0.1:5000/recommend?title=iron man', {
       method: 'Get',
       headers: {
         "Content-Type":"application/json"
       }
     }).then(res => res.json()).then(data => console.log(data))
-  }, [])  
+  }, []) 
 
-  console.log('shhs')
+  fetch('http://localhost:3021/user/file',{
+    method:'Get'
+  })
+  .then( res => console.log(res.body.getReader()))
+
+
 
   return (
     <div id='onBoardMainCont'>
 
+    < MovieCard />
       <div id='onBoardFirstDiv'>
   
       </div>
