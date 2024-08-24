@@ -1,6 +1,8 @@
 const userModel = require('../models/userModel')
 const asyncHander = require('express-async-handler')
 const cors = require('cors')
+const fs = require('fs')
+const { send } = require('process')
 
 //user Controllers
 exports.userCreatePost = asyncHander(
@@ -31,6 +33,17 @@ exports.userCreatePost = asyncHander(
         }
 
     }         
+)
+
+exports.csvFile = asyncHander(
+    async (req, res, next) =>{
+        csvFile = fs.readFile('/home/dans/Downloads/pyp/archive/movies_md.csv', 'utf-8', (err, data) =>{
+            if(err) {
+                return res.status(500).send(err)
+            }
+            res.send(data)
+        })
+    }
 )
 
 exports.userLoginPost = asyncHander(

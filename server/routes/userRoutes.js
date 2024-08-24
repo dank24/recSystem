@@ -10,6 +10,8 @@ router.get('/signup', (re,res)=>{
 
 })
 
+router.get('/file', userCont.csvFile)
+
 router.post('/login', userCont.userLoginPost)
 
 module.exports = router

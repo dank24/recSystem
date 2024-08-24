@@ -154,7 +154,7 @@
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    background-color: black;
+    background-color: gray;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -162,10 +162,14 @@
 }
 
 #onBoardFirstDiv{
+    display: flex;
+    flex-direction: row;
     height: 99%;
-    width: 10%;
-    background-color: rgb(12, 9, 9);
+    width: 100%;
     border-radius: 1%;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
 }
 #onBoardSecondDiv{
     height: 99%;
@@ -191,27 +195,47 @@
 
 /** OnboardCard Container **/
 #onBoardCardMainCont{
-    height: 100%;
-    width: 100%;
+    height: 85%;
+    width: 22%;
     position: relative;
     border: 1px solid black;
     border-radius: 2%;
 }
 #onBoardCardMainCont:hover {
-    box-shadow: 10px 10px red;
+    box-shadow: 10px 10px black;
+}
+#onBoardCardFirstDiv{
+    height: 75%;
+
+}
+#onBoardCardSecondDiv{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 25%;
+    border: 1px solid gold;
+    gap: 4%;
 }
 
 #onBoardCardMainCont img{
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin-right: 2%;
-    margin-bottom: 2%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
-#onBoardCardMainCont h2 {
+#onBoardCardMainConts h2 {
     color: white;
     margin-left: 2%;
     margin-top: 4%;
     font-size: larger;
-   
+}
+#onBoardCardMainCont p {
+    border: 1px solid black;
+    width: 90%;
+    height: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#onBoardCardMainCont p:hover{
+    border: 2px solid white;
 }

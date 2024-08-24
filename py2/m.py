@@ -13,7 +13,7 @@ links = pd.read_csv("/home/dans/Downloads/pyp/archive/links.csv", low_memory=Fal
 credits = pd.read_csv("/home/dans/Downloads/pyp/archive/credits.csv")
 
 
-movies_data = movies_df[['id','genres','adult','runtime', 'tagline', 'vote_average','title']]
+movies_data = movies_df[['imdb_id','id','genres','adult','runtime', 'tagline', 'vote_average','title']]
 
 
 keywords_data =  keywords['keywords']
@@ -65,7 +65,7 @@ def find_similar_movies(movie_title, n =29):
 
     idx = movies_data[movies_data['title'] == movie_title].index[0]
     distances, indices = nn.kneighbors(vectorizedBases[idx], n_neighbors=n+1)
-    return movies_data.iloc[indices[0][1:]][['title','vote_average']]
+    return movies_data.iloc[indices[0][1:]][['title','imdb_id','vote_average',]]
 
 
 from flask import Flask, request, jsonify

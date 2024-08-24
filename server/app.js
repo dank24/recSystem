@@ -3,6 +3,7 @@ const env = require('dotenv').config()
 const mongoose = require('mongoose')
 const path = require('path')
 const cors = require('cors')
+const fs = require('fs')
 
 const app = express()
 
@@ -36,3 +37,6 @@ const mongoUrl = process.env.mongoUrl
 mongoose.connect(mongoUrl).then(() =>{
     console.log('DB Connected')
 })
+
+
+//serve .csv file
