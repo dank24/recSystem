@@ -5,11 +5,12 @@ import '../assets/styles.css'
 const OnBoardCard = (props) =>{
 
     const styles = {
-        backgroundColor: [props.color]
+        backgroundColor: [props.color],
+        border: props.click == true ? '' : ''
     }
 
     return(
-        <div style={styles} id="onBoardCardMainCont" onClick={ e =>{
+        <div  id="onBoardCardMainCont" onClick={ e =>{
             props.handleClick(e, props.imdbID, props.click)
         }} >
                 <div id="onBoardCardFirstDiv">
@@ -18,9 +19,9 @@ const OnBoardCard = (props) =>{
 
                 <div id="onBoardCardSecondDiv">
                     <h2>{props.name}</h2>
-                    <p id="goodP">Good</p>
-                    <p id="mehP">Meh</p>
-                    <p id="neverP">Never Saw</p>
+                    <p onClick={props.pColors} id="goodP">Good</p>
+                    <p onClick={props.pColors} id="mehP">Meh</p>
+                    <p style={props.imdbID == props.styles.id ? props.styles.nP : styles } id="neverP">Never Saw</p>
                 </div>
 
         </div>

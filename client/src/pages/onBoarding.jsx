@@ -41,20 +41,53 @@ let [appendData, setAppendData] = useState([])
 let array = []
 let [click, setClick] = useState(false)
 
+
+let [gObj, setGObj] = useState({})
+let [mObj, setMObj] = useState({})
+let [nObj, setNobj] = useState({})
+
+let [styles, setStyles] = useState({
+  id: '',
+  gP: {},
+  mP: {},
+  nP: {}
+})
+
 function getUserPreference(e, id, click) {
   let choice = e.target.id
 
-  if(choice == 'goodP' && !click){
-    array.push(id)
+  if(choice == 'goodP'){
+    setGObj(gObj = {name: choice, imdb: id})
   }
-  console.log(array)
+  if(choice == 'mehP'){
+    setMObj({name: choice, imdb: id})
+  }
+  if(choice == 'neverP'){
+    setNobj({name: choice, imdb: id})
 
+    click ? setStyles(prev => {
+      return {
+        ...prev,
+        nP: {border: '2px solid gold'},
+        id: id
+      }
+    }) : console.log('s')
+  }
+
+  console.log(gObj)
+  console.log(mObj)
+  console.log(id)
 
   setClick(!click)
   console.log(click)
 
 }
 
+function changePColor(e) {
+  
+}
+
+console.log(styles)
 
 //UseEffects
 // effects to parse The csvFile
@@ -108,6 +141,7 @@ let s = appendData.map(it =>{
             handleClick = {getUserPreference}
             imdbID = {it.imdbID}
             click = {click}
+            styles = {styles}
   />
 })
 
