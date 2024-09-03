@@ -32,27 +32,6 @@ let [appendData, setAppendData] = useState([])
 
 
 //Function
-//    Fetch Movies Function
-const fetchMovies = async () =>{
-  let aData = []
-
-  for(let i = 0; i < 3; i++){
-
-      let randomIndex = Math.floor(Math.random()*csvData.length)
-    try{
-      let imdb = csvData[randomIndex].imdb_id
-
-      let apiFetch = await fetch(`http://www.omdbapi.com/?apikey=${apiKey}&i=${imdb}`)
-      let data = await apiFetch.json();
-
-      aData.push({name: data.Title, img: data.Poster, imdbID: data.imdbID, key: data.imdbID})
-
-    } catch (error){
-      console.error(error)
-    }
-  }
-  setAppendData(aData)
-}
 
 //    Place Genres Function
 function placeGenres(){
@@ -131,6 +110,30 @@ if(test){
 
 }
 
+//    Fetch Movies Function
+const fetchMovies = async () =>{
+  let aData = []
+
+  for(let i = 0; i < 3; i++){
+
+      let randomIndex = Math.floor(Math.random()*csvData.length)
+    try{
+      let imdb = csvData[randomIndex].imdb_id
+
+      let apiFetch = await fetch(`http://www.omdbapi.com/?apikey=${apiKey}&i=${imdb}`)
+      let data = await apiFetch.json();
+
+      aData.push({name: data.Title, img: data.Poster, imdbID: data.imdbID, key: data.imdbID})
+
+    } catch (error){
+      console.error(error)
+    }
+  }
+  setAppendData(aData)
+}
+
+
+
 //    Get Recommendations Function
 const getRecs = async (array) =>{
 
@@ -174,7 +177,7 @@ async function completeOnboard(send){
       'Accept': 'applictaion/json'
     },
     body: JSON.stringify(recMovies)
-  } )
+  } ).then(res => res.json()).then(data => console.log(data))
   }
 
 }
@@ -281,16 +284,9 @@ function getUserPreference(title, e, id, click) {
 }
 
 
-
-
-
-
-
-//        Set Certain Genres Function
-
-
 //UseEffects
-// effects to parse The csvFile
+
+//    Parse CsvFile And Save To State
 useEffect(() =>{
   fetch(moviesMd)
   .then(res => res.text())
@@ -305,19 +301,21 @@ useEffect(() =>{
 
 }, [])
 
-//
-
+//    Call placeGenre Function
 useEffect(() =>{
   placeGenres()
 }, [csvData, test])
 
-// Effects to set appendData
+
+//    Call fetcHmovies Function
 useEffect(() =>{
   if(csvData.length > 1){
     fetchMovies()
   }
 
 }, [csvData, genreArray])
+
+
 
 const [a, setA] = useState(
   appendData.map(it =>{
