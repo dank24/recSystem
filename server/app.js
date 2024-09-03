@@ -11,6 +11,7 @@ const app = express()
 
 //routes
 const userRoutes = require('./routes/userRoutes')
+const moviesRoutes = require('./routes/movieRoutes')
 
 //use
 app.use(express.json())
@@ -19,7 +20,7 @@ app.use(cors({
     methods: ['POST', 'GET', 'PUT']
 }))
 app.use('/user', userRoutes)
-
+app.use('/movies', moviesRoutes)
 
 
 

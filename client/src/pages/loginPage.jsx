@@ -1,12 +1,19 @@
 import react from "react";
 import {useState, useEffect} from 'react'
+import { useNavigate } from "react-router-dom";
 
-const LoginPage = () =>{
+import '../App.css'
+
+import UserHome from "./userHome";
+
+const LoginPage = (props) =>{
 
     const [pageData, setPageData] = useState({
         userName: '',
         userPassword: '',
+        dbUser: {}
     })
+    const navigate = useNavigate()
 
 //Functions
 const handleChange = (e) =>{
@@ -18,17 +25,43 @@ const handleChange = (e) =>{
         }
     })
 }
+
+//       Function handle Submit
 const handleSubmit = (e) =>{
-    e.preventDefault()
-    fetch('http://localhost:3021/user/login', {
+    
+    let login = fetch('http://localhost:3021/user/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
         body: JSON.stringify(pageData)
-    }).then(res => res.json()).then(data => console.log(data))
+    }).then(res => res.json())
+      .then(data => {
+        if(data.message == 'Welcome'){
+            console.log(data.user)
+            setPageData(prev =>{
+                return {
+                    ...prev,
+                    dbUser: data.user
+                }
+            })
+        } else if(data.message == 'Incorrect Password'){
+            console.log('incorrect password')
+        }
+
+      })
+      .catch(error => console.error(`Error: ${error}`))
 } 
+// useEffects to handle navigation
+useEffect(() =>{
+    if(pageData.dbUser.onBoarded == true){
+        navigate('/userhome')
+    } else if( pageData.dbUser.onBoarded == false){
+        navigate(`/onboarding/${pageData.dbUser._id}`)
+    }
+}, [pageData.dbUser,])
+
 
     return(
         <div id="loginMainCont">
@@ -61,7 +94,11 @@ const handleSubmit = (e) =>{
 
                     <button
                         type="button"
-                        onClick={handleSubmit}
+                        onClick={(e) =>{
+                            e.preventDefault()
+                            handleSubmit()
+                            props.loginData(pageData)
+                        }}
                         >Login
                     
                     </button>

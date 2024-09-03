@@ -185,7 +185,7 @@ body{
 
 #lForm{
   border-radius: 5%;
-  border: 1px solid brown;
+  border: 1px solid black;
   height: 85%;
   width: 85%;
   display: flex;
@@ -194,7 +194,13 @@ body{
   justify-content: center;
   gap: 2%;
 }
+
 #lForm fieldset{
   width: 85%;
   border-radius: 3%;
+  border: 1px solid black;
+}
+
+#lForm button {
+  border: 0.5px solid rgb(51, 51, 97);
 }

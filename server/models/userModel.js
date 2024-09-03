@@ -17,6 +17,15 @@ const userSchema = schema({
     },
     userDOB:{
         type: String
+    },
+    onBoarded: {
+        type: Boolean,
+    },
+    userMovieRecs: {
+        type: Array
+    },
+    userMusicRecs: {
+        type: Array
     }
 })
 

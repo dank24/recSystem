@@ -25,7 +25,7 @@ listData = pd.concat([movies_data, keywords_data, credits_data], axis=1)
 
 
 
-columns = ['id','genres','adult','runtime', 'tagline', 'vote_average','keywords','title','cast','crew']
+columns = ['id','genres','adult','runtime', 'tagline', 'vote_average','imdb_id','keywords','title','cast','crew']
 
 for column in columns:
     listData[column] = listData[column].fillna('')
@@ -61,24 +61,40 @@ distances, indices = nn.kneighbors(vectorizedBases, n_neighbors=30)
 
 
 def find_similar_movies(movie_title, n =29):
+
+
+    if not movie_title:
+        return ({"Error":"empty"})
+    
+    if movie_title == []:
+        return ({'Error': "empty array"})
+    
     movie_title = difflib.get_close_matches(movie_title, moviesList)[0]
 
+
+    
     idx = movies_data[movies_data['title'] == movie_title].index[0]
     distances, indices = nn.kneighbors(vectorizedBases[idx], n_neighbors=n+1)
-    return movies_data.iloc[indices[0][1:]][['title','imdb_id','vote_average',]]
+    return listData.iloc[indices[0][1:]][['title','imdb_id','vote_average',]]
 
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route('/recommend', methods=['GET'])
 def recommend():
+
+
     movie_title = request.args.get('title')
     n = int(request.args.get('n', 29))
     similar_movies = find_similar_movies(movie_title, n)
+
+    if 'Error' in similar_movies:
+        return jsonify({'this': similar_movies}), 404
+    
     return jsonify(similar_movies.to_dict(orient ='records'))
 
 if __name__ == '__main__':

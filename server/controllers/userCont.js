@@ -16,15 +16,15 @@ exports.userCreatePost = asyncHander(
         let user = await userModel.findOne({userName: name})
 
         if(user){
-
-            res.status(200).json({message: `User ${userName} Exists`})
+            console.log(user)
         }
 
         if(!user){
          let newUser = new userModel({
             userName: name,
             userEmail: email,
-            userPassword: password
+            userPassword: password,
+            onBoarded: false
          })
 
          await newUser.save()
@@ -56,7 +56,11 @@ exports.userLoginPost = asyncHander(
                    await userModel.findOne({userEmail: name})
 
         if(user){
-            res.status(200).json({message: 'Welcome'})
+            if(password === user.userPassword){
+                res.status(200).json({message: 'Welcome', user: user})
+            } else {
+                res.status(200).json({message: 'Incorrect Password'})
+            }
         }
         if(!user){
             res.status(400).json({Message: `User Not Found`})
@@ -64,3 +68,29 @@ exports.userLoginPost = asyncHander(
     }
 )
   
+exports.userOnboardPut =asyncHander(
+    async(req,res,next) =>{
+        let userId = req.params.id
+        
+        try{
+
+            let s = await userModel.findByIdAndUpdate(userId, {onBoarded: true})
+            res.status(200).json({Success: 'onboarded'})
+        } catch (error) {
+            res.status(500).json({Error: 'Failed to onboard'})
+        }
+    }
+)
+
+exports.userMovieRecPut = asyncHander(
+    async(req,res,next) =>{
+        let userId = req.params.id
+        let recievedRecs = req.body
+
+        try{
+           let recs = await userModel.findByIdAndUpdate(userId, {userMovieRecs: recievedRecs})
+        } catch (error) {
+            res.status(500).json({error: 'Couldnt update recommendations'})
+        }
+    }
+)

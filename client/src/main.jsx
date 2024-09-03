@@ -7,5 +7,5 @@ import { BrowserRouter } from 'react-router-dom'
 import OnBoarding from './pages/onBoarding.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-      < OnBoarding />
+      < App />
 )

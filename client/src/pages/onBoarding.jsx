@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+
 import papa, { parse } from 'papaparse'
 import cors from 'cors'
 
@@ -11,14 +13,10 @@ import genres from '../assets/Data/genres.js'
 import OnBoardCard from '../components/onBoardCards'
 
 
-const OnBoarding = () => {
+const OnBoarding = (props) => {
   
-  cors(
-    {
-      origin: '*',
-      methods: ['PUT', 'POST', 'GET']
-    }
-  )
+const userId = useParams()
+const navigate = useNavigate()
 
 
 // Variables
@@ -27,13 +25,14 @@ const apiKey = 'b0daf648'
 let [csvData, setCsvData] = useState([])
 let [likedMovies, setLikedMovies] = useState([])
 let [recMovies, setRecMovies] = useState([])
-let [genreArray, setGenreArray] = useState([])
+let [test, setTest] = useState([])
+let [genreArray, setGenreArray] = useState({})
 let [appendData, setAppendData] = useState([])
 
 
 
 //Function
-//                      FetchM Movies Function
+//    Fetch Movies Function
 const fetchMovies = async () =>{
   let aData = []
 
@@ -55,25 +54,171 @@ const fetchMovies = async () =>{
   setAppendData(aData)
 }
 
+//    Place Genres Function
+function placeGenres(){
+  let arr1 = []
+  let arr2 = {
+    anime: [],
+    comedy: [],
+    adventure: [],
+    fantasy: [],
+    romance: [],
+    action: [],
+    drama: [],
+    crime: [],
+    thriller: [],
+    horror: [],
+    sci_fi: [],
+    mystery: []
+  }
+  
+if(csvData && test.length <=0 ){
+  csvData.map(items =>{
+
+    let re = items.genres.replace(/'/g, '"')
+    let newGenre = JSON.parse(re)
+
+    arr1.push({id: items.id, title: items.title, genres: newGenre, imdb_id: items.imdb_id })
+  })
+  setTest(arr1)
+}
+
+if(test){
+   test.map(items =>{
+    if(items.genres[0]){
+      if(items.genres[0].id == 16){
+        arr2.anime.push(items)
+      }
+      if(items.genres[0].id == 35){
+        arr2.comedy.push(items)
+      }
+      if(items.genres[0].id == 12){
+        arr2.adventure.push(items)
+      }
+      if(items.genres[0].id == 14){
+        arr2.fantasy.push(items)
+      }
+      if(items.genres[0].id == 10749){
+        arr2.romance.push(items)
+      }
+      if(items.genres[0].id == 28){
+        arr2.action.push(items)
+      }
+      if(items.genres[0].id == 18){
+        arr2.drama.push(items)
+      }
+      if(items.genres[0].id == 80){
+        arr2.crime.push(items)
+      }
+      if(items.genres[0].id == 53){
+        arr2.thriller.push(items)
+      }
+      if(items.genres[0].id == 27){
+        arr2.horror.push(items)
+      }
+      if(items.genres[0].id == 9648){
+        arr2.mystery.push(items)
+      }
+      if(items.genres[0].id == 878){
+        arr2.sci_fi.push(items)
+      }
+    }
+  }) 
+
+  setGenreArray(arr2)
+}
 
 
+}
 
-//                      Get Recommendations Function
+//    Get Recommendations Function
 const getRecs = async (array) =>{
 
   for(let it of array){
-    let fetchApi = await fetch(`http://127.0.0.1:5000/recommend?title=${it.title}`)
-    
-    let data = await fetchApi.json()
 
-    recMovies.push(data)
+    try{
+      let fetchApi = await fetch(`http://127.0.0.1:5000/recommend?title=${it.title}`)
+    
+      let data = await fetchApi.json()
+
+      recMovies.push(data)
+
+  
+    } catch (error){
+      console.error(error)
+    }
+
+  }
+
+}
+console.log(recMovies)
+
+
+//    complete Onboarding Function
+async function completeOnboard(send){
+
+  if(likedMovies.length >=10){
+    let updateOnboard = fetch(`http://localhost:3021/user/onboarduser/${userId.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type':"application/json",
+        'Accept': 'application/json'
+      }
+    }).then(res => res.json()).then(data => console.log(data))
+    console.log('done')
+
+  let updateMovieRec = fetch(`http://localhost:3021/user/recMovie/${userId.id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'applictaion/json'
+    },
+    body: JSON.stringify(recMovies)
+  } )
   }
 
 }
 
 
+//    find out how to push the current values of gArr
+function nextBtn() {
 
-//                       Get User Preference function
+  if(count >= 3){
+    gArr.map(it =>{
+      if(!likedMovies.some(movies => movies.imdbID == it.imdbID)){
+        likedMovies.push(it)
+      }
+    })
+    fetchMovies()
+  }
+
+  setGArr([])
+  
+  console.log(likedMovies)
+  setCount(0)
+
+  setClick(!click)
+
+  if(likedMovies.length >= 10){
+    //getRecs(likedMovies)
+   // completeOnboard()
+  }
+}
+
+
+//    Send Liked Movie Function
+function sendLikedMovies(){
+  fetch('http://localhost:3021/movies/likedMovies', {
+    method: 'POST',
+    headers: {
+      "accept": "application/json",
+      'Content-Type': 'application/json' 
+    },
+    body: JSON.stringify(likedMovies)
+  })  
+}
+
+//    Get User Preference function
 let array = []
 let [click, setClick] = useState(false)
 
@@ -137,30 +282,11 @@ function getUserPreference(title, e, id, click) {
 
 
 
-//find out how to push the current values of gArr
-function nextBtn() {
 
-  if(count >= 3){
-    gArr.map(it =>{
-      if(!likedMovies.some(movies => movies.imdbID == it.imdbID)){
-        likedMovies.push(it)
-      }
-    })
-    fetchMovies()
-  }
 
-  setGArr([])
-  
-  console.log(likedMovies)
-  setCount(0)
 
-  setClick(!click)
 
-  if(likedMovies.length == 5){
-    getRecs(likedMovies)
-  }
-}
-
+//        Set Certain Genres Function
 
 
 //UseEffects
@@ -181,13 +307,17 @@ useEffect(() =>{
 
 //
 
+useEffect(() =>{
+  placeGenres()
+}, [csvData, test])
+
 // Effects to set appendData
 useEffect(() =>{
   if(csvData.length > 1){
     fetchMovies()
   }
 
-}, [csvData])
+}, [csvData, genreArray])
 
 const [a, setA] = useState(
   appendData.map(it =>{
@@ -222,7 +352,13 @@ let s = appendData.map(it =>{
       
       <div id='onBoardFirstDiv'>
         {appendData .length > 2 ? s : <p>not</p> }
-        <button onClick={nextBtn}>Next</button>
+
+        <button onClick={(e) =>{
+          props.onBoardData(likedMovies);
+          nextBtn()
+        }}
+          >Next
+        </button>
         
       </div>
 
